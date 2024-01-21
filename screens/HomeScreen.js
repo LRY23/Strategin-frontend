@@ -20,7 +20,7 @@ export default function HomeScreen({ navigation }) {
 
     const handleConnection = () => {
 
-        fetch('https://strategin-backend.vercel.app/users/login', {
+        fetch('http://localhost:3000/users/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email: email, password: password }),

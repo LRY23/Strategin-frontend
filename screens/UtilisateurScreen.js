@@ -6,7 +6,7 @@ function UtilisateurScreen() {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    fetch('https://strategin-backend.vercel.app/profiles/users')
+    fetch('http://localhost:3000/profiles/users')
       .then(response => response.json())
       .then(data => {
           if (data && data.usernames) {
