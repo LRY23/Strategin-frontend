@@ -21,7 +21,7 @@ function RegisterScreen({navigation}) {
   };
   
    const handleRegister = () => {
-    fetch('http://192.168.1.33:3000/users/register', {
+    fetch('http://strategin-backend.vercel.app/users/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: email, password: password, username: username}),
