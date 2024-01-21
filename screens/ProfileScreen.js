@@ -8,7 +8,7 @@ export default function ProfileScreen({ navigation }) {
   const user = useSelector((state) => state.users.value);
   
   const handleDelete = () => {
-    fetch(`https://strategin-backend.vercel.app/users/delete`, {
+    fetch(`http://192.168.1.33:3000/users/delete`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
