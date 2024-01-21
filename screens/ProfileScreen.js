@@ -1,9 +1,12 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { View, SafeAreaView, StyleSheet, Text, TouchableOpacity, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { Alert } from 'react-native';
+import { logout } from '../reducers/users'
 
 export default function ProfileScreen({ navigation }) {
+
+  const dispatch = useDispatch();
 
   const user = useSelector((state) => state.users.value);
   
@@ -24,8 +27,12 @@ export default function ProfileScreen({ navigation }) {
       }
     });
   }
-  
-  const afficherConfirmation = () => {
+  const logoutSessions = () => {
+    dispatch(logout());
+    navigation.navigate('Home');
+  };
+
+  const deleteConfirmation = () => {
     Alert.alert(
       'Confirmation',
       'Êtes-vous sûr de vouloir supprimer cette annonce ?',
@@ -43,21 +50,48 @@ export default function ProfileScreen({ navigation }) {
       { cancelable: true }
     );
   };
+
+  const logoutConfirmation = () => {
+    Alert.alert(
+      'Confirmation',
+      'Êtes-vous sûr de vouloir vous déconnecter ?',
+      [
+        {
+          text: 'Annuler',
+          style: 'cancel',
+        },
+        {
+          text: 'Se déconnecter',
+          onPress: () => logoutSessions(),
+          style: 'destructive',
+        },
+      ],
+      { cancelable: true }
+    );
+  };
   
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <KeyboardAvoidingView style={styles.container}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.container}>
-              <Text style={styles.title}>Supprimer mon profil</Text>
-              <Text style={styles.warning}>Attention, dès que vous aurez procédé à la suppression de votre profil, votre nom sera retiré de la liste des utilisateurs de Strateg-in </Text>
-        
-              <View style={styles.inputContainer}>
-                <TouchableOpacity 
-                        style={styles.registerBtn} 
-                        onPress={() => afficherConfirmation()}>
-                        <Text style={styles.textBtn}>Supprimer</Text>
+              <View style={styles.logout}>
+                  <Text style={styles.logoutTitle}>Quitter l'application</Text>
+                    <TouchableOpacity 
+                        style={styles.logoutBtn}
+                        onPress={() => logoutConfirmation()}>
+                        <Text style={styles.textBtn}>Se déconnecter</Text>
                     </TouchableOpacity>
+              </View>
+
+              <View style={styles.delete}>
+                  <Text style={styles.title}>Supprimer mon profil</Text>
+                  <Text style={styles.warning}>Attention, dès que vous aurez procédé à la suppression de votre profil, votre nom sera retiré de la liste des utilisateurs de Strateg-in </Text>
+                <TouchableOpacity 
+                    style={styles.deleteBtn} 
+                    onPress={() => deleteConfirmation()}>
+                    <Text style={styles.textBtn}>Supprimer</Text>
+                </TouchableOpacity>
               </View>
           </View>
         </TouchableWithoutFeedback>
@@ -76,34 +110,42 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     flex:1
   },
+  logout: {
+    width:370,
+    alignItems:'center',
+  },
+  logoutTitle: {
+    fontSize: 30,
+    fontWeight: '600',
+  },
+  logoutBtn: {
+    height: 45,
+    width:250,
+    borderRadius: 12,
+    marginTop: 25,
+    alignItems:'center',
+    justifyContent: 'center',
+    backgroundColor: '#0554ca',
+  },
+  delete: {
+    width:370,
+    alignItems:'center',
+    marginTop:150
+  },
   title: {
     fontSize: 30,
     fontWeight: '600',
-    marginTop:205
   },
   warning : {
     fontSize:18,
     width: 330,
-    marginTop:55
+    marginTop:15,
   },
-  inputContainer: {
-    width: '80%',
-    padding: 20,
-    height:600,
-    borderRadius: 10,
-    marginTop:25
-  },
-  textInput: {
-    borderRadius:12,
-    borderWidth:1,
-    padding:20,
-    marginTop:25
-  }, 
-  registerBtn: { 
+  deleteBtn: { 
     height: 45,
     width:250,
     borderRadius: 12,
-    marginTop: 4,
+    marginTop: 25,
     alignItems:'center',
     justifyContent: 'center',
     backgroundColor: '#FA3245',
@@ -114,24 +156,4 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 25,
   },
-  passwordContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  eyeIcone: {
-    position: 'absolute',
-    right: 15,
-    top:25
-  },
-  textInput: {
-    borderWidth: 0,
-    fontSize: 23,
-    height: 40,
-    width: 240,
-    marginTop: 24,
-    justifyContent:'center',
-    borderWidth: 0,
-    borderBottomWidth: 2, 
-    borderBottomColor: '#0554ca',
-  }, 
 });
